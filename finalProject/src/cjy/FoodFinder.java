@@ -23,7 +23,6 @@ public class FoodFinder extends JFrame {
 	
 	 /**
      * FoodFinder 생성자.
-     * 
      * 프로그램의 기본 창 설정(크기, 제목, 닫기 동작, 위치)을 수행합니다.
      */
 	
