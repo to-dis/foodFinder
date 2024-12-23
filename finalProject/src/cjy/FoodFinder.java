@@ -18,7 +18,7 @@ import java.util.HashMap;
  * 
  * 
  * @author Choi Jong Yun
- * @version 1.3
+ * @version 1.5
  * @since 1.0
  * 
  * @created 2024-12-23
@@ -30,20 +30,26 @@ import java.util.HashMap;
  *            <li>2024-12-23: 음식 장르 선택 UI 추가</li>
  *            <li>2024-12-23: 버튼 클릭 시 음식점 정보 표시 기능 추가</li>
  *            <li>2024-12-23: 한식 장르에 대한 창과 가게 정보 추가</li>
+ *            <li>2024-12-23: 입출력 처리 추가(restaurants.csv)</li>
+ *            <li>2024-12-23: 컬렉션 프레임워크 추가(HashMap, ArrayList)</li>
  *            </ul>
  */
 
 public class FoodFinder extends JFrame {
-
+	
 	/**
-	 * FoodFinder 생성자. 프로그램의 기본 창 설정(크기, 제목, 닫기 동작, 위치)을 수행합니다.
-	 * 
-	 * 사용자는 상단의 텍스트 지시문에 따라 음식 장르 버튼을 선택할 수 있습니다. 버튼과 레이아웃은 GridLayout과
-	 * BorderLayout을 사용해 구성되어 있습니다.
-	 */
-
+     * 음식점 데이터를 저장하기 위한 HashMap.
+     * 키: 음식 장르 (예: "한식", "일식").
+     * 값: 해당 장르의 음식점 세부정보 리스트.
+     */
 	private HashMap<String, ArrayList<String>> restaurantData = new HashMap<>();
 
+	/**
+	 * FoodFinder 생성자.
+     * 프로그램의 기본 창 설정(크기, 제목, 닫기 동작, 위치)을 수행합니다.
+     * 사용자는 상단의 텍스트 지시문에 따라 음식 장르 버튼을 선택할 수 있습니다.
+     * 버튼과 레이아웃은 GridLayout과 BorderLayout을 사용해 구성되어 있습니다.
+	 */
 	public FoodFinder() {
 		// 프로그램 제목 설정
 		setTitle("음식점 선택 프로그램");
@@ -95,6 +101,13 @@ public class FoodFinder extends JFrame {
 		setVisible(true);
 	}
 
+	/**
+     * CSV 파일에서 음식점 데이터를 로드합니다.
+     * 파일은 사용자의 바탕화면에 위치하며 "restaurants.csv"라는 이름을 가져야 합니다.
+     * 파일의 각 줄은 "장르: 음식점 세부정보" 형식을 따라야 합니다.
+     *
+     * @throws IOException 파일을 읽을 수 없거나 파일이 없는 경우 예외가 발생합니다.
+     */
 	private void loadRestaurantData() throws IOException {
 		String filePath = "C:\\Users\\miu02\\OneDrive\\Desktop\\restaurants.csv";
 
@@ -117,13 +130,11 @@ public class FoodFinder extends JFrame {
 	}
 
 	/**
-	 * 선택한 음식 장르에 대한 가게 정보를 표시하는 새 창을 엽니다.
-	 * 
-	 * @param genre 선택된 음식 장르
-	 * 
-	 * @description 이 메서드는 JTextArea를 사용해 선택된 음식 장르에 대한 가게 정보를 표시하는 새 JFrame 창을 생성하고
-	 *              가게 정보를 출력합니다.
-	 */
+     * 선택한 음식 장르에 대한 음식점 정보를 표시합니다.
+     * 새 JFrame을 생성하여 세부정보를 스크롤 가능한 텍스트 영역에 표시합니다.
+     *
+     * @param genre 선택된 음식 장르 (예: "한식", "일식").
+     */
 	private void showRestaurantInfo(String genre) {
 		// 새로운 창 생성
 		JFrame infoFrame = new JFrame(genre + " 음식점 정보");
