@@ -6,9 +6,15 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * FoodFinder 프로그램의 메인 클래스입니다. 이 클래스는 GUI 기반의 음식점 선택 프로그램의 틀을 제공합니다.
+ * restaurants.csv의 내용을 입력받아 음식점 선택 프로그램을 진행합니다.
  * 
  * 
  * @author Choi Jong Yun
@@ -35,6 +41,8 @@ public class FoodFinder extends JFrame {
 	 * 사용자는 상단의 텍스트 지시문에 따라 음식 장르 버튼을 선택할 수 있습니다. 버튼과 레이아웃은 GridLayout과
 	 * BorderLayout을 사용해 구성되어 있습니다.
 	 */
+
+	private HashMap<String, ArrayList<String>> restaurantData = new HashMap<>();
 
 	public FoodFinder() {
 		// 프로그램 제목 설정
@@ -76,8 +84,36 @@ public class FoodFinder extends JFrame {
 		// 버튼 패널을 중앙에 추가
 		add(buttonPanel, BorderLayout.CENTER);
 
+		try {
+			loadRestaurantData(); // 데이터 로드
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(this, "파일을 읽는 중 오류가 발생했습니다: restaurants.csv", "오류",
+					JOptionPane.ERROR_MESSAGE);
+		}
+
 		// 창 보이기 설정
 		setVisible(true);
+	}
+
+	private void loadRestaurantData() throws IOException {
+		String filePath = "C:\\Users\\miu02\\OneDrive\\Desktop\\restaurants.csv";
+
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				if (!line.contains(":") || !line.contains(",")) {
+					System.err.println("잘못된 형식의 데이터: " + line);
+					continue; // 잘못된 데이터는 무시합니다
+				}
+
+				String[] parts = line.split(":", 2); // ":" 기준으로 나눔
+				String genre = parts[0].trim(); // 장르 추출
+				String restaurantInfo = parts[1].trim(); // 가게 정보 추출
+
+				restaurantData.putIfAbsent(genre, new ArrayList<>());
+				restaurantData.get(genre).add(restaurantInfo); // 데이터 저장
+			}
+		}
 	}
 
 	/**
@@ -85,9 +121,8 @@ public class FoodFinder extends JFrame {
 	 * 
 	 * @param genre 선택된 음식 장르
 	 * 
-	 * @description
-	 * 이 메서드는 JTextArea를 사용해 선택된 음식 장르에 대한 가게 정보를
-	 * 표시하는 새 JFrame 창을 생성하고 가게 정보를 출력합니다.
+	 * @description 이 메서드는 JTextArea를 사용해 선택된 음식 장르에 대한 가게 정보를 표시하는 새 JFrame 창을 생성하고
+	 *              가게 정보를 출력합니다.
 	 */
 	private void showRestaurantInfo(String genre) {
 		// 새로운 창 생성
@@ -100,6 +135,22 @@ public class FoodFinder extends JFrame {
 		JTextArea infoText = new JTextArea();
 		infoText.setFont(new Font("맑은 고딕", Font.PLAIN, 14));
 		infoText.setEditable(false); // 텍스트 편집 불가능 설정
+
+		// 데이터 표시
+		ArrayList<String> restaurants = restaurantData.get(genre);
+		if (restaurants != null && !restaurants.isEmpty()) {
+			StringBuilder builder = new StringBuilder();
+			for (String restaurant : restaurants) {
+				builder.append(restaurant).append("\n\n");
+			}
+			infoText.setText(builder.toString());
+		} else {
+			infoText.setText("해당 장르에 대한 정보가 없습니다.");
+		}
+
+		// 텍스트 영역을 스크롤 가능하도록 추가
+		infoFrame.add(new JScrollPane(infoText));
+		infoFrame.setVisible(true);
 	}
 
 	/**
