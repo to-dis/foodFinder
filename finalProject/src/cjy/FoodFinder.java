@@ -23,6 +23,7 @@ import java.awt.event.ActionListener;
  *            <li>2024-12-23: 최초 생성 (Choi Jong Yun)</li>
  *            <li>2024-12-23: 음식 장르 선택 UI 추가</li>
  *            <li>2024-12-23: 버튼 클릭 시 음식점 정보 표시 기능 추가</li>
+ *            <li>2024-12-23: 한식 장르에 대한 창과 가게 정보 추가</li>
  *            </ul>
  */
 
@@ -72,6 +73,9 @@ public class FoodFinder extends JFrame {
      * 선택한 음식 장르에 대한 가게 정보를 표시하는 새 창을 엽니다.
      * 
      * genre : 선택된 음식 장르
+     * 
+     * 이 메서드는 JTextArea를 사용해 선택된 음식 장르에 대한 가게 정보를
+     * 표시하는 새 JFrame 창을 생성하고 가게 정보를 출력합니다.
      */
     private void showRestaurantInfo(String genre) {
         JFrame infoFrame = new JFrame(genre + " 음식점 정보");
@@ -84,15 +88,24 @@ public class FoodFinder extends JFrame {
         infoText.setEditable(false);
         if (genre.equals("한식")) {
             infoText.setText("한식 관련 가게 정보:\n"
-                    + "1. 가게 이름: 솥정\n   위치: 청주시 청원구 내덕동 123-45, 1층\n   메뉴: 김치찌개, 된장찌개, 제육볶음\n\n"
-                    + "2. 가게 이름: 수미백반\n   위치: 청주시 청원구 내덕동 67-89, 2층\n   메뉴: 백반, 제육볶음, 생선구이\n\n"
-                    + "3. 가게 이름: 리정식당\n   위치: 청주시 청원구 내덕동 101-23, 지하 1층\n   메뉴: 육개장, 설렁탕, 갈비탕");
+                    + "1. 가게 이름: 묵꼬먹꼬\n   위치: 청주대 중문, 1층\n   메뉴: 제육덮밥, 닭갈비덮밥\n   가격대: 7000~8000\n\n"
+                    + "2. 가게 이름: 청대불고기\n   위치: 청주대 중문, 1층\n   메뉴: 불고기세트, 김치찌개, 부대찌개\n   가격대: (2인)18000~\n\n"
+                    + "3. 가게 이름: 인생찌개집\n   위치: 청주대 중문, 1층\n   메뉴: 삼겹듬뿍찌개, 햄듬뿍부대찌개\n   가격대: 7000~15000\n\n"
+            		+ "4. 가게 이름: 부활\n   위치: 청주대 중문, 1층\n   메뉴: 짜글이찌개, 뚝불고기\n   가격대: 5000~6000\n\n"
+            		+ "5. 가게 이름: 오로지\n   위치: 청주대 중문, 2층\n   메뉴: 김치찌개냄비, 불고기냄비\n   가격대: 7000~14000\n\n"
+            		+ "6. 가게 이름: 백미순대\n   위치: 청주대 중문, 1층\n   메뉴: 순대국밥\n   가격대: 8000~");
         }
 
         infoFrame.add(new JScrollPane(infoText));
         infoFrame.setVisible(true);
     }
 
+    /**
+     * 프로그램의 진입점.
+     * 
+     * FoodFinder 프로그램을 실행하는 메인 메서드입니다.
+     * 
+     */
 	public static void main(String[] args) {
 		new FoodFinder();
 	}
