@@ -36,6 +36,6 @@ public class FoodFinder extends JFrame {
     }
 
     public static void main(String[] args) {
-        new FoodFinder();
+        new FoodFinder(); 
     }
 }
